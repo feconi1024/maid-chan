@@ -1,0 +1,45 @@
+{
+  "format": "maid-chan-memory",
+  "version": "1.1",
+  "subject": {
+    "id": "master",
+    "display_name": "Example Master"
+  },
+  "source": {
+    "platform": "manual",
+    "exported_at": "2026-07-24T12:00:00Z"
+  },
+  "memories": [
+    {
+      "id": "manual:communication:concise",
+      "kind": "communication",
+      "content": "The master prefers concise answers with concrete examples.",
+      "confidence": 1.0,
+      "importance": 4,
+      "privacy_rating": 2,
+      "status": "active",
+      "tags": [
+        "answer-style"
+      ],
+      "updated_at": "2026-07-24T12:00:00Z",
+      "provenance": {
+        "method": "manual",
+        "locator": "user-reviewed profile",
+        "extracted_by": "user"
+      }
+    },
+    {
+      "id": "manual:project:maid-chan",
+      "kind": "project",
+      "content": "The master is building Maid-chan, a corpus-grounded chatbot.",
+      "confidence": 1.0,
+      "importance": 5,
+      "privacy_rating": 3,
+      "status": "active",
+      "tags": [
+        "maid-chan",
+        "chatbot"
+      ]
+    }
+  ]
+}

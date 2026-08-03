@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+.env
+.maid-chan-memory/
+*.memory.local.json
+*.visibility.local.json
+.maid-chan/
+.agents/
+corpus/sources/
+*.epub
+memories/
+AGENTS.md
+*.log

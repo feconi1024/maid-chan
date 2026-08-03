@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "maid-chan"
+version = "0.1.0"
+description = "A corpus-grounded Maid-chan CLI bot for OpenAI-compatible APIs"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+dependencies = []
+
+[project.optional-dependencies]
+wechat = [
+    "wx4py==0.2.1; platform_system == 'Windows'",
+    "pywechat127==1.9.8; platform_system == 'Windows'",
+]
+wechat-ui = [
+    "wx4py==0.2.1; platform_system == 'Windows'",
+    "pywechat127==1.9.8; platform_system == 'Windows'",
+]
+weixin = [
+    "qrcode==8.2",
+]
+
+[project.scripts]
+maid-chan = "maid_chan.cli:main"
+maid-chan-wechat = "maid_chan.wechat_cli:main"
+maid-chan-weixin = "maid_chan.weixin_cli:main"
+
+[tool.setuptools.packages.find]
+include = ["maid_chan*"]
+
+[tool.setuptools.package-data]
+"maid_chan.wechaty_runtime" = ["*.mjs", "*.json", "*.md"]

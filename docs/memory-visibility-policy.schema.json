@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maid-chan.local/schemas/memory-visibility-policy-1.0.json",
+  "title": "Maid-chan Memory Visibility Policy 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "version",
+    "default_viewer_max_privacy_rating",
+    "viewers"
+  ],
+  "properties": {
+    "format": {
+      "const": "maid-chan-memory-visibility"
+    },
+    "version": {
+      "const": "1.0"
+    },
+    "default_viewer_max_privacy_rating": {
+      "$ref": "#/$defs/rating"
+    },
+    "viewers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/viewer"
+      }
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/channel"
+      },
+      "default": []
+    }
+  },
+  "$defs": {
+    "rating": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "platform": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$"
+    },
+    "audience_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "viewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "user_id", "max_privacy_rating"],
+      "properties": {
+        "platform": {
+          "$ref": "#/$defs/platform"
+        },
+        "user_id": {
+          "$ref": "#/$defs/audience_id"
+        },
+        "max_privacy_rating": {
+          "$ref": "#/$defs/rating"
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        }
+      }
+    },
+    "channel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "channel_id", "max_privacy_rating"],
+      "properties": {
+        "platform": {
+          "$ref": "#/$defs/platform"
+        },
+        "channel_id": {
+          "$ref": "#/$defs/audience_id"
+        },
+        "max_privacy_rating": {
+          "$ref": "#/$defs/rating"
+        },
+        "label": {
+          "$ref": "#/$defs/label"
+        }
+      }
+    }
+  }
+}

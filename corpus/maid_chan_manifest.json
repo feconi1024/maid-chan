@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-23T15:10:19.507056+00:00",
+  "extractor": "tools/corpus/extract_maid_chan_corpus.py",
+  "settings": {
+    "sources": "corpus/sources",
+    "output": "corpus",
+    "context_window": 3,
+    "minimum_confidence": "medium"
+  },
+  "outputs": {
+    "maid_chan_fewshot.jsonl": 60,
+    "maid_chan_conversations.jsonl": 32,
+    "maid_chan_contexts.jsonl": 150
+  },
+  "books": [
+    {
+      "epub_file": "10.5.樱花庄的宠物女孩 (鸭志田一) (Z-Library).epub",
+      "documents_read": 7,
+      "explicit_mention_contexts": 2,
+      "conversations": 1
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 01 (鸭志田一) (Z-Library).epub",
+      "documents_read": 16,
+      "explicit_mention_contexts": 8,
+      "conversations": 4
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 02 (鸭志田一) (Z-Library).epub",
+      "documents_read": 20,
+      "explicit_mention_contexts": 18,
+      "conversations": 3
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 03 (鸭志田一) (Z-Library).epub",
+      "documents_read": 18,
+      "explicit_mention_contexts": 17,
+      "conversations": 3
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 04 (鸭志田一) (Z-Library).epub",
+      "documents_read": 19,
+      "explicit_mention_contexts": 13,
+      "conversations": 3
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 05 (鸭志田一) (Z-Library).epub",
+      "documents_read": 21,
+      "explicit_mention_contexts": 14,
+      "conversations": 1
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 10 (鸭志田一) (Z-Library).epub",
+      "documents_read": 24,
+      "explicit_mention_contexts": 9,
+      "conversations": 4
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 6 (鸭志田一) (Z-Library).epub",
+      "documents_read": 22,
+      "explicit_mention_contexts": 5,
+      "conversations": 1
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 7 (鴨志田一) (Z-Library).epub",
+      "documents_read": 26,
+      "explicit_mention_contexts": 16,
+      "conversations": 5
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 7.5 (鸭志田一) (Z-Library).epub",
+      "documents_read": 8,
+      "explicit_mention_contexts": 0,
+      "conversations": 0
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 8 (鸭志田一) (Z-Library).epub",
+      "documents_read": 10,
+      "explicit_mention_contexts": 1,
+      "conversations": 0
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 9 (鸭志田一) (Z-Library).epub",
+      "documents_read": 9,
+      "explicit_mention_contexts": 6,
+      "conversations": 2
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩 BD温泉短篇 (作者：鸭志田一) (Z-Library).epub",
+      "documents_read": 10,
+      "explicit_mention_contexts": 0,
+      "conversations": 0
+    },
+    {
+      "epub_file": "樱花庄的宠物女孩5.5 (鸭志田一) (Z-Library).epub",
+      "documents_read": 13,
+      "explicit_mention_contexts": 41,
+      "conversations": 5
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "format": "maid-chan-memory-visibility",
+  "version": "1.0",
+  "default_viewer_max_privacy_rating": 1,
+  "viewers": [
+    {
+      "platform": "wechat",
+      "user_id": "replace-with-owner-stable-id",
+      "max_privacy_rating": 5,
+      "label": "owner"
+    },
+    {
+      "platform": "wechat",
+      "user_id": "replace-with-trusted-contact-id",
+      "max_privacy_rating": 3,
+      "label": "trusted contact"
+    }
+  ],
+  "channels": [
+    {
+      "platform": "wechat",
+      "channel_id": "replace-with-group-chat-stable-id",
+      "max_privacy_rating": 1,
+      "label": "public group ceiling"
+    }
+  ]
+}
