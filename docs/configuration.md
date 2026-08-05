@@ -82,4 +82,3 @@ details.
 
 The `.maid-chan/` directory is ignored by Git because it may contain runtime
 dependencies, login profiles, local control state, and account credentials.
-

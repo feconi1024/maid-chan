@@ -1,9 +1,22 @@
+/**
+ * JSON Lines bridge between the Python Wechaty transport and a Wechaty bot.
+ *
+ * Commands arrive as one JSON object per stdin line. Events and command results
+ * are emitted as one JSON object per stdout line; human-readable QR codes use
+ * stderr so they cannot corrupt the protocol stream.
+ */
 import readline from 'node:readline'
 import process from 'node:process'
 import { FileBox } from 'file-box'
 import qrTerminal from 'qrcode-terminal'
 import { ScanStatus, WechatyBuilder } from 'wechaty'
 
+/**
+ * Emit one structured bridge event on the stdout protocol stream.
+ *
+ * @param {Record<string, unknown>} payload - Event or command-result payload.
+ * @returns {void}
+ */
 const emit = (payload) => {
   process.stdout.write(`${JSON.stringify(payload)}\n`)
 }
@@ -18,6 +31,12 @@ const bot = WechatyBuilder.build({
 
 let stopping = false
 
+/**
+ * Persist available Wechaty state, close stdin, and terminate the bridge once.
+ *
+ * @param {number} [exitCode=0] - Process exit code to report to Python.
+ * @returns {Promise<void>} Resolves only when a concurrent stop is in progress.
+ */
 async function stop(exitCode = 0) {
   if (stopping) return
   stopping = true

@@ -32,4 +32,3 @@ the details behind each subsystem.
 
 - [Example profile memory](../examples/master-memory.example.json)
 - [Example viewer visibility policy](../examples/memory-visibility.example.json)
-

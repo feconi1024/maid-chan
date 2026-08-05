@@ -1,9 +1,9 @@
 # Maid-chan External Memory Interchange (MEMI) 1.1
 
-Status: stable application profile  
-Canonical media type: `application/json; charset=utf-8`  
-Canonical format name: `maid-chan-memory`  
-Version: `1.1`
+- Status: stable application profile
+- Canonical media type: `application/json; charset=utf-8`
+- Canonical format name: `maid-chan-memory`
+- Version: `1.1`
 
 MEMI is a small, provider-neutral interchange format for durable facts about the
 person using a chatbot. It is designed for importing user-reviewed memories from

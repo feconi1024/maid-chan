@@ -80,4 +80,3 @@ Add new outbound action types in this order:
 4. Add CLI preview and confirmation behavior.
 5. Document the new capability in [WeChat transports](wechat-transports.md) and
    [Shell and outbound actions](shell-and-actions.md).
-

@@ -139,4 +139,3 @@ Current capability summary:
 | Passive private auto-reply | experimental | supported through events |
 | Moment text/image/video | public/default only | unsupported |
 | Custom Moment visibility/location/reminders | unsupported | unsupported |
-

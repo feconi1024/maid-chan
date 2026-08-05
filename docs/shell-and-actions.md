@@ -126,4 +126,3 @@ Validation rules include:
 - media files must live under approved media roots;
 - files must exist, use supported extensions, and be no larger than 25 MiB;
 - unsupported backend capabilities fail the whole plan before any action runs.
-

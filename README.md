@@ -202,4 +202,3 @@ More detail lives in [docs/index.md](docs/index.md), especially
 The generated corpus is derived from supplied books. Keep access and use aligned
 with the rights and licensing that apply to those source files. See
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for integration notices.
-

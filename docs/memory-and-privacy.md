@@ -97,4 +97,3 @@ See:
 
 - [Visibility policy schema](memory-visibility-policy.schema.json)
 - [Example visibility policy](../examples/memory-visibility.example.json)
-
