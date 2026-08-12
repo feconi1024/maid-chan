@@ -5,6 +5,19 @@ traceable.
 
 ## 2026-08-12
 
+### Changed
+
+- Replaced runtime injection of raw light-novel few-shot dialogue with a
+  scenario-free personality guide, preventing source character names,
+  relationships, scenes, dialogue, and plot facts from leaking into replies or
+  composed messages.
+- Removed the hard-coded source-character identity for the operator. Added
+  `MAID_CHAN_OPERATOR_NAME`, `MAID_CHAN_OPERATOR_HONORIFIC`,
+  `--operator-name`, and `--operator-honorific`; an unconfigured operator is
+  addressed neutrally as `您`.
+- Propagated the configured operator identity through terminal chat, Private
+  Spaces, WeChat auto-replies, action planning, and interactive drafting.
+
 ### Added
 
 - Added the Private Spaces MVP with exact contact selection, hashed per-contact

@@ -142,6 +142,8 @@ def create_parser() -> argparse.ArgumentParser:
     act.add_argument("--base-url", default=None, help=f"default: {DEFAULT_BASE_URL}")
     act.add_argument("--model", default=None, help=f"default: {DEFAULT_MODEL}")
     act.add_argument("--timeout", type=float, default=60.0)
+    act.add_argument("--operator-name")
+    act.add_argument("--operator-honorific")
     act.add_argument("--media-root", type=Path, action="append", default=[])
     act.add_argument("--dry-run", action="store_true")
     act.add_argument("--yes", action="store_true")
@@ -160,6 +162,8 @@ def create_parser() -> argparse.ArgumentParser:
     compose.add_argument("--memory-file", type=Path, action="append", default=None)
     compose.add_argument("--few-shots", type=int, default=4)
     compose.add_argument("--history-turns", type=int, default=8)
+    compose.add_argument("--operator-name")
+    compose.add_argument("--operator-honorific")
     compose.add_argument("--timeout", type=float, default=60.0)
     compose.add_argument("--media", type=Path, action="append", default=[])
     compose.add_argument("--media-root", type=Path, action="append", default=[])
@@ -173,6 +177,8 @@ def create_parser() -> argparse.ArgumentParser:
     run.add_argument("--memory-file", type=Path, action="append", default=None)
     run.add_argument("--few-shots", type=int, default=8)
     run.add_argument("--history-turns", type=int, default=12)
+    run.add_argument("--operator-name")
+    run.add_argument("--operator-honorific")
     run.add_argument("--temperature", type=float, default=0.9)
     run.add_argument("--max-tokens", type=int, default=500)
     run.add_argument("--timeout", type=float, default=60.0)
@@ -215,6 +221,8 @@ def _build_runner(
         memory_paths=tuple(args.memory_file) if args.memory_file else None,
         few_shot_count=args.few_shots,
         history_turns=args.history_turns,
+        operator_name=args.operator_name,
+        operator_honorific=args.operator_honorific,
         temperature=args.temperature,
         max_tokens=args.max_tokens,
         timeout=args.timeout,
@@ -259,13 +267,19 @@ def _action_planner(args) -> WeChatActionPlanner:
         model=args.model,
         timeout=args.timeout,
         stream=False,
+        operator_name=args.operator_name,
+        operator_honorific=args.operator_honorific,
     )
     if not settings.api_key:
         raise WeChatConfigError(
             "missing API key; set DEEPSEEK_API_KEY or OPENAI_API_KEY "
             "in .env or the process environment"
         )
-    return WeChatActionPlanner(ChatClient(settings))
+    return WeChatActionPlanner(
+        ChatClient(settings),
+        operator_name=settings.operator_name,
+        operator_honorific=settings.operator_honorific,
+    )
 
 
 def _media_roots(values: list[Path]) -> tuple[Path, ...]:
@@ -292,6 +306,8 @@ def _drafting_session(
         history_turns=args.history_turns,
         timeout=args.timeout,
         stream=False,
+        operator_name=args.operator_name,
+        operator_honorific=args.operator_honorific,
     )
     if not settings.api_key:
         raise WeChatConfigError(
@@ -314,6 +330,8 @@ def _drafting_session(
             few_shot_count=settings.few_shot_count,
             history_turns=settings.history_turns,
             memory_max_chars=settings.memory_max_chars,
+            operator_name=settings.operator_name,
+            operator_honorific=settings.operator_honorific,
         ),
         media,
     )

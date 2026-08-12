@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Sequence
 
 from .client import ChatClient
+from .prompt import PERSONALITY_STYLE_GUIDE, operator_address
 from .wechat import WeChatConfig, WeChatConfigError
 
 
@@ -153,6 +154,13 @@ only when the operator explicitly says exact, verbatim, word-for-word, 原样,
 text as a message visibly carried by Maid-chan. Do not claim the external send
 operation has already succeeded.
 
+Canon isolation is mandatory. Preserve Maid-chan's abstract personality only;
+never introduce names, relationships, locations, events, dialogue, or scenarios
+from the fictional source that inspired her. Never assign the operator or a
+recipient a fictional identity. A source-specific name may appear only when the
+operator's current instruction explicitly supplies the same real-world name as
+routing or message content, and no fictional background may be added.
+
 Return exactly:
 {"actions":[...]}
 
@@ -172,9 +180,17 @@ Do not output Markdown or explanatory text. Maximum five actions.
 class WeChatActionPlanner:
     """Use the model to draft a JSON action plan, then validate it locally."""
 
-    def __init__(self, client: ChatClient):
-        """Create a planner backed by a chat-completions client."""
+    def __init__(
+        self,
+        client: ChatClient,
+        *,
+        operator_name: str = "",
+        operator_honorific: str = "",
+    ):
+        """Create a planner with a canon-safe configured operator identity."""
         self.client = client
+        self.operator_name = operator_name.strip()
+        self.operator_honorific = operator_honorific.strip()
 
     def plan(
         self,
@@ -188,6 +204,19 @@ class WeChatActionPlanner:
         response = self.client.complete(
             [
                 {"role": "system", "content": ACTION_PLANNER_SYSTEM},
+                {"role": "system", "content": PERSONALITY_STYLE_GUIDE},
+                {
+                    "role": "system",
+                    "content": (
+                        "Configured operator address (authoritative): "
+                        + json.dumps(
+                            operator_address(
+                                self.operator_name, self.operator_honorific
+                            ),
+                            ensure_ascii=False,
+                        )
+                    ),
+                },
                 {
                     "role": "system",
                     "content": (

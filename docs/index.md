@@ -10,6 +10,9 @@ the details behind each subsystem.
   and extension points.
 - [Configuration](configuration.md) lists environment variables, CLI flags,
   local state files, and secret-handling rules.
+- [Personality and operator identity](personality-and-identity.md) explains how
+  Maid-chan preserves her voice without leaking source characters or scenarios,
+  and how to customize the operator's form of address.
 - [Shell and outbound actions](shell-and-actions.md) documents the interactive
   command shell, natural-language routing, drafting, action planning, and
   confirmation model.

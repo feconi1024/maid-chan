@@ -50,6 +50,8 @@ class MaidChanEngine:
                 else memory_privacy_level
             ),
             memory_include_restricted=False,
+            operator_name=self.settings.operator_name,
+            operator_honorific=self.settings.operator_honorific,
         )
         reply = self.client.complete(messages)
         history.extend(

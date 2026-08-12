@@ -40,6 +40,11 @@ def _add_chat_settings(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--model", default=None, help=f"default: {DEFAULT_MODEL}")
     parser.add_argument("--few-shots", type=int, default=8)
     parser.add_argument("--history-turns", type=int, default=12)
+    parser.add_argument("--operator-name", help="name Maid-chan uses for the operator")
+    parser.add_argument(
+        "--operator-honorific",
+        help="suffix appended to the configured operator name",
+    )
     parser.add_argument("--temperature", type=float, default=0.9)
     parser.add_argument("--max-tokens", type=int, default=500)
     parser.add_argument("--timeout", type=float, default=60.0)
@@ -165,6 +170,8 @@ def _chat_settings(args: argparse.Namespace) -> Settings:
         model=args.model,
         few_shot_count=args.few_shots,
         history_turns=args.history_turns,
+        operator_name=args.operator_name,
+        operator_honorific=args.operator_honorific,
         temperature=args.temperature,
         max_tokens=args.max_tokens,
         timeout=args.timeout,
@@ -199,6 +206,8 @@ def _one_reply(
         history_turns=settings.history_turns,
         memories=(),
         private_space_context=private_context,
+        operator_name=settings.operator_name,
+        operator_honorific=settings.operator_honorific,
     )
     if not settings.stream:
         reply = client.complete(messages)

@@ -9,7 +9,8 @@ contact-isolated Private Spaces imported from WeFlow chat histories.
 The core chatbot combines:
 
 - a behavior-focused Maid-chan persona prompt;
-- relevant few-shot examples from `corpus/maid_chan_fewshot.jsonl`;
+- a scenario-free personality guide derived from behavioral traits rather than
+  raw novel dialogue;
 - bounded in-memory conversation history;
 - optional user-reviewed external profile memories in MEMI JSON format.
 - contact-scoped identity and episodic history retrieval in Private Space mode.
@@ -30,6 +31,14 @@ Create a local environment file:
 ```powershell
 Copy-Item .env.example .env
 # Edit .env and set DEEPSEEK_API_KEY=your-api-key
+```
+
+Optionally configure how Maid-chan addresses you. Without this setting she uses
+the neutral `您` and never assumes the identity of a source character:
+
+```dotenv
+MAID_CHAN_OPERATOR_NAME=Hehao
+MAID_CHAN_OPERATOR_HONORIFIC=大人
 ```
 
 Run the interactive shell:
@@ -91,7 +100,9 @@ python -m maid_chan `
 ```
 
 See [Configuration](docs/configuration.md) for all environment variables, CLI
-flags, state paths, and secret-handling rules.
+flags, state paths, and secret-handling rules. See
+[Personality and operator identity](docs/personality-and-identity.md) for the
+canon-isolation boundary and custom forms of address.
 
 ## Interactive Shell
 
@@ -206,7 +217,7 @@ maid_chan/
   shell.py               interactive slash and natural-language router
   client.py              OpenAI-compatible HTTP/SSE client
   config.py              settings and dotenv loading
-  prompt.py              persona prompt and few-shot retrieval
+  prompt.py              canon-isolated persona and operator identity prompt
   memory.py              MEMI validation, selection, and prompt context
   visibility.py          viewer/channel privacy policy
   private_space.py       isolated WeFlow import, identity, relations, and recall

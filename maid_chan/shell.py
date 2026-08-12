@@ -588,6 +588,12 @@ class MaidChanShell:
             ("--model", self.settings.model),
             ("--timeout", str(self.settings.timeout)),
         ]
+        if self.settings.operator_name:
+            options.append(("--operator-name", self.settings.operator_name))
+        if self.settings.operator_honorific:
+            options.append(
+                ("--operator-honorific", self.settings.operator_honorific)
+            )
         if command in {"compose", "run"}:
             options.extend(
                 (

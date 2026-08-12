@@ -34,7 +34,7 @@ rejected so that typos do not silently weaken privacy or lifecycle controls.
   "version": "1.1",
   "subject": {
     "id": "master",
-    "display_name": "龙之介"
+    "display_name": "Hehao"
   },
   "source": {
     "platform": "chatgpt",
@@ -312,7 +312,9 @@ A consumer SHOULD:
 The consumer MUST preserve the bundle's subject mapping when it constructs model
 context. A record saying “the subject” is meaningless unless the model also
 receives the associated `subject.id` and `subject.display_name`. For Maid-chan,
-`subject.id = "master"` identifies 龙之介大人.
+`subject.id = "master"` identifies the configured operator. Its display name is
+profile data; the runtime's explicit operator-name and honorific settings remain
+authoritative for how Maid-chan addresses the user.
 
 Passing the privacy filter authorizes use for that audience; relevance still
 controls whether the fact should be mentioned. The model MUST NOT receive

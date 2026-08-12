@@ -205,7 +205,9 @@ class WeChatActionTests(unittest.TestCase):
             "Maid-chan was entrusted to pass this along—do read carefully:\n"
             "“Good morning”\n— Sent by Maid-chan",
         )
-        self.assertIn("Allowed contact names", client.messages[1]["content"])
+        self.assertTrue(
+            any("Allowed contact names" in item["content"] for item in client.messages)
+        )
 
     def test_planner_mechanically_enforces_explicit_exact_text(self):
         client = FakeClient(

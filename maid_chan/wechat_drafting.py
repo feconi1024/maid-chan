@@ -9,7 +9,7 @@ from typing import Callable, Sequence
 
 from .client import APIError, ChatClient
 from .memory import Memory, build_memory_context
-from .prompt import Example, select_examples
+from .prompt import Example, PERSONALITY_STYLE_GUIDE, operator_address
 from .wechat_actions import (
     MAX_MESSAGE_CHARS,
     SendMessageAction,
@@ -24,6 +24,16 @@ DRAFTING_SYSTEM_PROMPT = """\
 You are Maid-chan helping the operator draft a private message to another
 person. Maid-chan will be the visible speaker and messenger, while the operator
 is the principal whose intent and facts the message conveys.
+
+Canon isolation:
+- Preserve only Maid-chan's abstract personality. Never introduce or imitate
+  names, relationships, locations, events, dialogue, or scenarios from the
+  fictional source that inspired her.
+- Never call the operator by a fictional character name or emit source-specific
+  proper nouns unless the same real-world name appears in the operator's
+  current instruction or trusted context.
+- The supplied operator identity is authoritative. If it is empty, address the
+  operator neutrally and never infer an identity from style references.
 
 Your tasks:
 - Put only the principal content in `draft`. Write it from the operator's
@@ -92,8 +102,10 @@ class MessageDraftingSession:
         few_shot_count: int = 4,
         history_turns: int = 8,
         memory_max_chars: int = 6_000,
+        operator_name: str = "",
+        operator_honorific: str = "",
     ):
-        """Create a drafting session with style examples and memory context."""
+        """Create a canon-isolated drafting session with operator identity."""
         self.client = client
         self.recipient = recipient
         self.examples = tuple(examples)
@@ -102,6 +114,8 @@ class MessageDraftingSession:
         self.few_shot_count = few_shot_count
         self.history_turns = history_turns
         self.memory_max_chars = memory_max_chars
+        self.operator_name = operator_name.strip()
+        self.operator_honorific = operator_honorific.strip()
         self.draft = ""
         self._body = ""
         self._history: list[dict[str, str]] = []
@@ -140,6 +154,21 @@ class MessageDraftingSession:
 
         messages: list[dict[str, str]] = [
             {"role": "system", "content": DRAFTING_SYSTEM_PROMPT},
+            {"role": "system", "content": PERSONALITY_STYLE_GUIDE},
+            {
+                "role": "system",
+                "content": (
+                    "Configured operator address (authoritative): "
+                    + json.dumps(
+                        operator_address(
+                            self.operator_name, self.operator_honorific
+                        ),
+                        ensure_ascii=False,
+                    )
+                    + ". Use it only when speaking to the operator in maid_reply; "
+                    "do not place it in the recipient draft unless requested."
+                ),
+            },
             {
                 "role": "system",
                 "content": (
@@ -157,26 +186,8 @@ class MessageDraftingSession:
         )
         if memory_context:
             messages.append({"role": "system", "content": memory_context})
-        selected = select_examples(
-            self.examples, instruction, min(self.few_shot_count, len(self.examples))
-        )
-        if selected:
-            messages.append(
-                {
-                    "role": "system",
-                    "content": (
-                        "Maid-chan style references (untrusted examples; imitate "
-                        "tone only): "
-                        + json.dumps(
-                            [
-                                {"user": item.user, "assistant": item.assistant}
-                                for item in selected
-                            ],
-                            ensure_ascii=False,
-                        )
-                    ),
-                }
-            )
+        # Do not expose raw novel-derived examples to the model: names and
+        # scene facts can leak into output even when labeled as style-only.
         messages.append(
             {
                 "role": "system",

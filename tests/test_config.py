@@ -66,6 +66,23 @@ class SettingsTests(unittest.TestCase):
         settings = Settings.from_environment()
         self.assertEqual(settings.memory_privacy_level, 4)
 
+    @patch.dict(
+        "os.environ",
+        {
+            "MAID_CHAN_OPERATOR_NAME": "Hehao",
+            "MAID_CHAN_OPERATOR_HONORIFIC": "大人",
+        },
+        clear=True,
+    )
+    def test_reads_custom_operator_identity_from_environment(self):
+        settings = Settings.from_environment()
+        self.assertEqual(settings.operator_name, "Hehao")
+        self.assertEqual(settings.operator_honorific, "大人")
+        self.assertEqual(settings.operator_address, "Hehao大人")
+
+    def test_unconfigured_operator_uses_neutral_address(self):
+        self.assertEqual(Settings(api_key="test").operator_address, "您")
+
     @patch.dict("os.environ", {}, clear=True)
     def test_reads_api_configuration_from_dotenv(self):
         path = self.write_env(

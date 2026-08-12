@@ -88,8 +88,25 @@ class Settings:
     memory_max_chars: int = DEFAULT_MEMORY_MAX_CHARS
     memory_privacy_level: int = DEFAULT_MEMORY_PRIVACY_LEVEL
     memory_include_restricted: bool = False
+    operator_name: str = ""
+    operator_honorific: str = ""
     stream: bool = True
     thinking: bool = False
+
+    def __post_init__(self) -> None:
+        """Validate bounded operator identity fields used inside prompts."""
+        if len(self.operator_name) > 100:
+            raise ValueError("operator_name must contain at most 100 characters")
+        if len(self.operator_honorific) > 40:
+            raise ValueError("operator_honorific must contain at most 40 characters")
+
+    @property
+    def operator_address(self) -> str:
+        """Return the configured name and honorific, or neutral ``您``."""
+        name = self.operator_name.strip()
+        if not name:
+            return "您"
+        return f"{name}{self.operator_honorific.strip()}"
 
     @classmethod
     def from_environment(
@@ -110,6 +127,8 @@ class Settings:
             or environment("OPENAI_API_KEY"),
             "base_url": environment("OPENAI_BASE_URL", DEFAULT_BASE_URL),
             "model": environment("OPENAI_MODEL", DEFAULT_MODEL),
+            "operator_name": environment("MAID_CHAN_OPERATOR_NAME"),
+            "operator_honorific": environment("MAID_CHAN_OPERATOR_HONORIFIC"),
         }
         memory_files = environment("MAID_CHAN_MEMORY_FILES")
         if memory_files:

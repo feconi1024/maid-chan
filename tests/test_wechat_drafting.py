@@ -1,6 +1,7 @@
 import json
 import unittest
 
+from maid_chan.prompt import Example
 from maid_chan.wechat_drafting import (
     DRAFTING_SYSTEM_PROMPT,
     MessageDraftingSession,
@@ -37,6 +38,27 @@ class DraftingSessionTests(unittest.TestCase):
             "下午三点见。",
         )
         self.assertIsNone(extract_explicit_exact_text("Draft a warm hello"))
+
+    def test_drafting_uses_configured_identity_without_raw_canon_examples(self):
+        client = FakeClient(
+            [
+                json.dumps(
+                    {"draft": "Hello.", "maid_reply": "完成。", "mode": "draft"}
+                )
+            ]
+        )
+        session = MessageDraftingSession(
+            client,
+            recipient="Alice",
+            examples=[Example("空太在哪里？", "龙之介大人正在忙。")],
+            operator_name="Hehao",
+            operator_honorific="大人",
+        )
+        session.revise("Say hello")
+        payload = "\n".join(item["content"] for item in client.calls[0])
+        self.assertIn("Hehao大人", payload)
+        self.assertNotIn("空太在哪里", payload)
+        self.assertNotIn("龙之介大人正在忙", payload)
 
     def test_drafts_then_revises_using_current_draft(self):
         client = FakeClient(

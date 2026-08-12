@@ -8,11 +8,12 @@ their own pinned dependencies only when selected.
 ## Runtime Flow
 
 1. `maid_chan.cli.main` parses CLI arguments, loads `.env`, resolves
-   `Settings`, loads few-shot examples, and validates external memories.
+   `Settings`, loads legacy corpus metadata, and validates external memories.
 2. `MaidChanShell` handles slash commands and model-classified natural
    commands. Ordinary messages are left as chat.
-3. `build_messages` assembles the system prompt, selected memory context,
-   relevant few-shot examples, recent history, and the current user turn.
+3. `build_messages` assembles a canon-isolated personality prompt, configured
+   operator identity, selected memory context, recent history, and the current
+   user turn. Raw novel dialogue is never placed in runtime requests.
 4. `ChatClient` sends the request to an OpenAI-compatible
    `/chat/completions` endpoint and returns a full response or streaming
    chunks.
@@ -34,7 +35,7 @@ path.
 | `maid_chan.shell` | Slash commands, natural-language operation routing, risk prompts, and delegation to the WeChat CLI. |
 | `maid_chan.config` | dotenv parsing, environment-variable precedence, and immutable settings. |
 | `maid_chan.client` | Standard-library HTTP/SSE client for OpenAI-compatible chat completions. |
-| `maid_chan.prompt` | Maid-chan persona prompt, few-shot loading, and lightweight example retrieval. |
+| `maid_chan.prompt` | Canon-isolated persona prompt, custom operator address, and legacy corpus utilities. |
 | `maid_chan.memory` | MEMI validation, memory loading, privacy filtering, ranking, and prompt serialization. |
 | `maid_chan.visibility` | Viewer and channel memory-privacy ceilings for messaging adapters. |
 | `maid_chan.private_space` | Hashed contact stores, WeFlow normalization, identity notes, explicit relations, and episodic retrieval. |
@@ -51,9 +52,11 @@ path.
 
 ## Data Boundaries
 
-Few-shot corpus data is read from `corpus/maid_chan_fewshot.jsonl`. It is used
-only as style and behavior reference material. Chat history remains in memory
-for the active process and is trimmed to `history_turns`.
+The generated corpus remains available for offline research and compatibility,
+but its raw dialogue is not inserted into runtime model requests. A static,
+scenario-free behavior guide captures the desired voice without exposing source
+names, relationships, scenes, or plot facts. Chat history remains in memory for
+the active process and is trimmed to `history_turns`.
 
 External memories are read from operator-supplied JSON files. They are not
 modified by Maid-chan. The memory prompt explicitly marks selected records as

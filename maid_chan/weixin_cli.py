@@ -69,6 +69,8 @@ def create_parser() -> argparse.ArgumentParser:
     run.add_argument("--memory-file", type=Path, action="append")
     run.add_argument("--few-shots", type=int, default=8)
     run.add_argument("--history-turns", type=int, default=12)
+    run.add_argument("--operator-name")
+    run.add_argument("--operator-honorific")
     run.add_argument("--temperature", type=float, default=0.9)
     run.add_argument("--max-tokens", type=int, default=500)
     run.add_argument("--timeout", type=float, default=60)
@@ -155,6 +157,8 @@ def _runner(args, store: WeixinStateStore) -> WeixinAutoReplyRunner:
         memory_paths=tuple(args.memory_file) if args.memory_file else None,
         few_shot_count=args.few_shots,
         history_turns=args.history_turns,
+        operator_name=args.operator_name,
+        operator_honorific=args.operator_honorific,
         temperature=args.temperature,
         max_tokens=args.max_tokens,
         timeout=args.timeout,

@@ -4,7 +4,14 @@ import unittest
 from pathlib import Path
 
 from maid_chan.memory import Memory
-from maid_chan.prompt import Example, build_messages, load_examples, select_examples
+from maid_chan.prompt import (
+    Example,
+    build_messages,
+    build_system_prompt,
+    load_examples,
+    operator_address,
+    select_examples,
+)
 
 
 class PromptTests(unittest.TestCase):
@@ -32,8 +39,8 @@ class PromptTests(unittest.TestCase):
         selected = select_examples(examples, "龙之介大人在睡觉吗", 1)
         self.assertEqual(selected[0], examples[1])
 
-    def test_builds_system_few_shot_history_and_current_message(self):
-        examples = [Example("示例问题", "示例回答")]
+    def test_builds_canon_free_system_history_and_current_message(self):
+        examples = [Example("空太在哪里？", "龙之介大人不知道。")]
         history = [
             {"role": "user", "content": "旧问题"},
             {"role": "assistant", "content": "旧回答"},
@@ -47,9 +54,21 @@ class PromptTests(unittest.TestCase):
         )
         self.assertEqual(
             [message["role"] for message in messages],
-            ["system", "user", "assistant", "user", "assistant", "user"],
+            ["system", "user", "assistant", "user"],
         )
+        prompt_payload = "\n".join(message["content"] for message in messages)
+        self.assertNotIn("空太在哪里", prompt_payload)
+        self.assertNotIn("龙之介大人不知道", prompt_payload)
         self.assertEqual(messages[-1]["content"], "新问题")
+
+    def test_builds_custom_operator_address_without_canon_identity(self):
+        prompt = build_system_prompt("Hehao", "大人")
+        self.assertIn("Hehao大人", prompt)
+        self.assertNotIn("赤坂龙之介", prompt)
+        self.assertNotIn("神田空太", prompt)
+        self.assertNotIn("丽塔", prompt)
+        self.assertEqual(operator_address(), "您")
+        self.assertEqual(operator_address("Hehao", "大人"), "Hehao大人")
 
     def test_places_external_memory_in_separate_system_message(self):
         memory = Memory(

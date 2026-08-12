@@ -35,6 +35,14 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument("--few-shots", type=int, default=8)
     parser.add_argument("--history-turns", type=int, default=12)
     parser.add_argument(
+        "--operator-name",
+        help="name Maid-chan should use for the operator",
+    )
+    parser.add_argument(
+        "--operator-honorific",
+        help="suffix appended to the configured operator name (for example 大人)",
+    )
+    parser.add_argument(
         "--memory-file",
         type=Path,
         action="append",
@@ -93,6 +101,8 @@ def _reply(
         memory_max_chars=settings.memory_max_chars,
         memory_privacy_level=settings.memory_privacy_level,
         memory_include_restricted=settings.memory_include_restricted,
+        operator_name=settings.operator_name,
+        operator_honorific=settings.operator_honorific,
     )
     if not settings.stream:
         reply = client.complete(messages)
@@ -216,6 +226,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             few_shot_path=args.few_shot_file,
             few_shot_count=args.few_shots,
             history_turns=args.history_turns,
+            operator_name=args.operator_name,
+            operator_honorific=args.operator_honorific,
             memory_paths=(
                 tuple(args.memory_files)
                 if args.memory_files is not None

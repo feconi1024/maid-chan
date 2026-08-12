@@ -37,20 +37,32 @@ local memory bundles.
 | Max tokens | none | `--max-tokens` | `500` |
 | Streaming | none | `--no-stream` disables | enabled |
 | DeepSeek thinking | none | `--thinking` enables | disabled |
+| Operator name | `MAID_CHAN_OPERATOR_NAME` | `--operator-name` | empty (`您`) |
+| Operator honorific | `MAID_CHAN_OPERATOR_HONORIFIC` | `--operator-honorific` | empty |
 
 If `base_url` already ends in `/chat/completions`, Maid-chan uses it as-is.
 If it points at the official DeepSeek host or ends in `/v1`, Maid-chan appends
 `/chat/completions`; otherwise it appends `/v1/chat/completions`.
 
+The operator name and honorific are concatenated exactly after trimming outer
+whitespace. For example, `Hehao` plus `大人` becomes `Hehao大人`. Leave the
+honorific empty for an unsuffixed name. If the name is absent, Maid-chan uses
+`您` and does not infer a name from corpus data, memories, or character lore.
+Both fields can also be passed to the main CLI and model-backed WeChat/private
+chat commands. See [Personality and operator identity](personality-and-identity.md).
+
 ## Prompt and History
 
 | Setting | CLI flag | Default |
 | --- | --- | --- |
-| Few-shot file | `--few-shot-file` | `corpus/maid_chan_fewshot.jsonl` |
-| Few-shot count | `--few-shots` | `8` |
+| Legacy corpus file | `--few-shot-file` | `corpus/maid_chan_fewshot.jsonl` |
+| Legacy selection count | `--few-shots` | `8` |
 | History turns | `--history-turns` | `12` |
 
 History is process-local and never written to disk by the core CLI.
+The legacy corpus options remain accepted for compatibility and corpus tooling,
+but raw novel-derived dialogue is no longer inserted into runtime prompts.
+Runtime personality comes from a scenario-free abstract style guide.
 
 ## External Memory
 
