@@ -79,6 +79,21 @@ class PromptTests(unittest.TestCase):
         self.assertIn("manual:identity:name", messages[1]["content"])
         self.assertIn('"display_name":"Hehao"', messages[1]["content"])
 
+    def test_places_private_space_context_in_separate_system_message(self):
+        messages = build_messages(
+            [],
+            [],
+            "hello",
+            few_shot_count=0,
+            history_turns=0,
+            private_space_context="PRIVATE SPACE JSON\n{}",
+        )
+        self.assertEqual(
+            [message["role"] for message in messages],
+            ["system", "system", "user"],
+        )
+        self.assertEqual(messages[1]["content"], "PRIVATE SPACE JSON\n{}")
+
 
 if __name__ == "__main__":
     unittest.main()

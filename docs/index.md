@@ -17,6 +17,9 @@ the details behind each subsystem.
   Moment publishing, capabilities, setup, and operational risks.
 - [Memory and privacy](memory-and-privacy.md) explains external profile memory,
   MEMI validation, visibility ceilings, and adapter responsibilities.
+- [Private Spaces](private-spaces.md) documents isolated WeFlow imports,
+  contact-scoped identity and episodic recall, explicit bilateral relations,
+  provider disclosure controls, and current media limits.
 - [Development](development.md) covers local setup, tests, documentation policy,
   and release maintenance.
 

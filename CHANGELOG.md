@@ -3,6 +3,36 @@
 All notable project changes should be recorded here so the product history is
 traceable.
 
+## 2026-08-12
+
+### Added
+
+- Added the Private Spaces MVP with exact contact selection, hashed per-contact
+  stores, normalized WeFlow direct-message imports, operator-reviewed identity
+  fields, and relevant episodic conversation retrieval.
+- Added a `maid-chan private` command group for importing histories, listing and
+  inspecting spaces, setting identities, managing bilateral relations, and
+  chatting as a selected correspondent.
+- Added pair-scoped relation records that share only operator-authored context
+  with two contacts without granting access to either private transcript.
+- Added local attachment cataloguing for images, videos, files, voice messages,
+  and emoji while keeping paths and binary contents out of model requests.
+- Added contact-scoped projection of voice transcripts already present in
+  WeFlow's support metadata without persisting the global transcript map.
+- Added comprehensive Private Spaces documentation and isolation tests.
+
+### Security
+
+- Private chat excludes shared MEMI inputs, fails closed on ambiguous aliases,
+  rejects symlinked state files, atomically writes local state, and omits stable
+  platform IDs, source paths, avatar/CDN metadata, and exporter XML from model
+  context.
+- Technical media basenames remain local because WeFlow voice filenames can
+  contain stable WeChat IDs; only attachment kinds and user-visible file-message
+  names may enter model context.
+- Non-loopback model endpoints are blocked unless the operator explicitly uses
+  `--allow-remote-context`; group chats are excluded from imports by default.
+
 ## 2026-08-05
 
 ### Added

@@ -236,6 +236,7 @@ class MaidChanShell:
             "  /memory                            查看外部记忆加载状态\n"
             "  /help                              显示本帮助\n"
             "  /quit | /exit                      退出交互终端\n"
+            "  maid-chan private chat <联系人>    进入联系人隔离的历史会话模式\n"
             "\n"
             "微信状态、安装与认证\n"
             "  /status                            查看运行时、登录目录、开关和允许名单\n"

@@ -109,8 +109,15 @@ def build_messages(
     memory_max_chars: int = 6000,
     memory_privacy_level: int = 3,
     memory_include_restricted: bool = False,
+    private_space_context: str | None = None,
 ) -> list[dict[str, str]]:
-    """Build the ordered Chat Completions messages for one turn."""
+    """Build the ordered Chat Completions messages for one turn.
+
+    ``private_space_context`` is already contact-scoped by
+    :mod:`maid_chan.private_space`.  Keeping it in a separate system message
+    prevents historical transcript data from being mistaken for current user
+    instructions and makes the isolation boundary easy to audit in tests.
+    """
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     memory_context = build_memory_context(
         memories,
@@ -121,6 +128,8 @@ def build_messages(
     )
     if memory_context:
         messages.append({"role": "system", "content": memory_context})
+    if private_space_context:
+        messages.append({"role": "system", "content": private_space_context})
     for example in select_examples(examples, user_message, few_shot_count):
         messages.extend(
             (

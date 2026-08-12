@@ -3,7 +3,8 @@
 Maid-chan is a corpus-grounded chatbot and experimental automatic messaging
 agent inspired by Maid-chan from *The Pet Girl of Sakurasou*. The current MVP is
 a terminal chatbot for OpenAI-compatible Chat Completions APIs, with optional
-operator-controlled personal-WeChat automation for allowed contacts.
+operator-controlled personal-WeChat automation for allowed contacts and
+contact-isolated Private Spaces imported from WeFlow chat histories.
 
 The core chatbot combines:
 
@@ -11,6 +12,7 @@ The core chatbot combines:
 - relevant few-shot examples from `corpus/maid_chan_fewshot.jsonl`;
 - bounded in-memory conversation history;
 - optional user-reviewed external profile memories in MEMI JSON format.
+- contact-scoped identity and episodic history retrieval in Private Space mode.
 
 The core CLI does not write chat logs or API keys to disk. Optional WeChat
 transports are experimental, unofficial automation paths and require explicit
@@ -41,6 +43,18 @@ Send one message and exit:
 ```powershell
 python -m maid_chan "你现在在做什么？"
 ```
+
+Import WeChat histories and simulate a chat as one exact correspondent:
+
+```powershell
+python -m maid_chan private import-wechat "F:\WeChat"
+python -m maid_chan private set-identity "津" --relationship "classmate"
+python -m maid_chan private chat "津" --allow-remote-context
+```
+
+Private chat blocks non-local model endpoints unless
+`--allow-remote-context` is given. See [Private Spaces](docs/private-spaces.md)
+for the isolation model, local-model setup, bilateral relations, and limits.
 
 Install the editable package and console command:
 
@@ -160,6 +174,21 @@ python -m maid_chan --memory-file memories\chatgpt.memory.local.json
 Real memory files should use ignored local filenames such as
 `*.memory.local.json`.
 
+## Private Spaces
+
+Private Spaces imports each WeFlow direct chat into its own hashed local
+directory. The selected contact's profile and relevant historical excerpts are
+retrieved without searching any other contact. Shared context is possible only
+through a separate operator-authored bilateral relation record; group chats are
+skipped by default.
+
+- [Private Spaces guide](docs/private-spaces.md)
+- [Memory and privacy guide](docs/memory-and-privacy.md)
+
+Local private-space data lives under `.maid-chan/private-spaces` and is ignored
+by Git. It is plaintext and should be kept on an access-controlled, encrypted
+volume when stronger at-rest protection is required.
+
 ## Tests
 
 ```powershell
@@ -180,6 +209,8 @@ maid_chan/
   prompt.py              persona prompt and few-shot retrieval
   memory.py              MEMI validation, selection, and prompt context
   visibility.py          viewer/channel privacy policy
+  private_space.py       isolated WeFlow import, identity, relations, and recall
+  private_cli.py         contact-selection and impersonation chat mode
   engine.py              transport-neutral reply engine
   wechat.py              shared WeChat config and UI polling runner
   wechat_actions.py      outbound action schema and validation

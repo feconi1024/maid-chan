@@ -18,6 +18,7 @@ class CliHelpTests(unittest.TestCase):
         self.assertIn("usage: maid-chan", help_text)
         self.assertIn("/compose", help_text)
         self.assertIn("/wechat send", help_text)
+        self.assertIn("maid-chan private chat", help_text)
 
     def test_wechat_slash_help_aliases_argparse_help(self):
         output = io.StringIO()

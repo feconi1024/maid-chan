@@ -20,6 +20,12 @@ their own pinned dependencies only when selected.
    reply interface to the terminal, wx4py runner, Wechaty runner, and iLink
    migration runner.
 
+Private Space mode takes a separate contact-scoped path: `private_cli` resolves
+one exact profile, `private_space` retrieves only that space's transcript and
+explicit shared relations, and `build_messages` adds the resulting untrusted
+JSON as a dedicated system message. Shared MEMI files are excluded from this
+path.
+
 ## Main Modules
 
 | Module | Responsibility |
@@ -31,6 +37,8 @@ their own pinned dependencies only when selected.
 | `maid_chan.prompt` | Maid-chan persona prompt, few-shot loading, and lightweight example retrieval. |
 | `maid_chan.memory` | MEMI validation, memory loading, privacy filtering, ranking, and prompt serialization. |
 | `maid_chan.visibility` | Viewer and channel memory-privacy ceilings for messaging adapters. |
+| `maid_chan.private_space` | Hashed contact stores, WeFlow normalization, identity notes, explicit relations, and episodic retrieval. |
+| `maid_chan.private_cli` | Operator import, identity, relation, and contact-impersonation chat commands. |
 | `maid_chan.engine` | Transport-neutral reply generation with bounded conversation history. |
 | `maid_chan.wechat` | Shared WeChat config, allowlist, UI transport protocol, and polling runner. |
 | `maid_chan.wechat_cli` | Standalone WeChat command surface used by both CLI and shell. |
@@ -52,12 +60,19 @@ modified by Maid-chan. The memory prompt explicitly marks selected records as
 quoted data, filters them by privacy rating, and tells the model not to treat
 memory contents as instructions.
 
+Private Space text is copied into `.maid-chan/private-spaces` as one profile and
+JSONL transcript per hashed platform ID. Runtime retrieval never scans across
+spaces. Cross-contact context lives in a separate pair-scoped relation file and
+contains only operator-authored shared text. Remote model endpoints are blocked
+for this mode until the operator supplies `--allow-remote-context`.
+
 WeChat control state is local and ignored by Git:
 
 - `.maid-chan/wechat.local.json`
 - `.maid-chan/wechaty-runtime`
 - `.maid-chan/wechaty-profile`
 - `.maid-chan/weixin-ilink.local.json`
+- `.maid-chan/private-spaces`
 
 ## Extension Points
 

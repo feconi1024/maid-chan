@@ -200,6 +200,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from .weixin_cli import main as weixin_main
 
         return weixin_main(effective_argv[1:])
+    if effective_argv and effective_argv[0] == "private":
+        from .private_cli import main as private_main
+
+        return private_main(effective_argv[1:])
     args = create_parser().parse_args(effective_argv)
     try:
         settings = Settings.from_environment(

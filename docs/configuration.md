@@ -82,3 +82,19 @@ details.
 
 The `.maid-chan/` directory is ignored by Git because it may contain runtime
 dependencies, login profiles, local control state, and account credentials.
+
+## Private Space Settings
+
+Private Space commands use `--spaces-dir` to override the default
+`.maid-chan/private-spaces` store. Chat mode accepts the normal provider,
+few-shot, history, temperature, token, timeout, streaming, and thinking flags.
+It additionally supports:
+
+| Flag | Default | Purpose |
+| --- | --- | --- |
+| `--private-context-chars` | `12000` | Bound selected profile and historical transcript text per request. |
+| `--allow-remote-context` | off | Permit selected private text to leave the machine for a non-loopback model URL. |
+
+Private chat deliberately ignores `MAID_CHAN_MEMORY_FILES` so a shared MEMI
+pool cannot bleed into a correspondent space. Provider credentials are still
+read from the normal environment or `.env` settings.
